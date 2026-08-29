@@ -16,14 +16,13 @@ module FA_Gate(
   output sum,
   output cout
 );
-
   wire ps, pc1, pc2;
 
-  xor #(2,3) (ps,  a,   b);
-  and #(2,3) (pc1, a,   b);
-  xor #(2,3) (sum, cin, ps);
-  and #(2,3) (pc2, cin, ps);
-  or  #(2,3) (cout, pc1, pc2);
+  xor #(2) (ps,  a,   b);
+  and #(2) (pc1, a,   b);
+  xor #(2) (sum, cin, ps);
+  and #(2) (pc2, cin, ps);
+  or  #(2) (cout, pc1, pc2);
 
 endmodule
 
@@ -38,7 +37,7 @@ module rca(
 
   wire c1, c2, c3;
 
-  FA_Gate FA0 (
+ FA_Gate FA0 (
     .a(a[0]),
     .b(b[0]),
     .cin(cin),
@@ -46,6 +45,7 @@ module rca(
     .cout(c1)
   );
 
+  // FA1: a[1], b[1], c1 -> sum[1], c2
   FA_Gate FA1 (
     .a(a[1]),
     .b(b[1]),
@@ -54,6 +54,7 @@ module rca(
     .cout(c2)
   );
 
+  // FA2: a[2], b[2], c2 -> sum[2], c3
   FA_Gate FA2 (
     .a(a[2]),
     .b(b[2]),
@@ -62,6 +63,7 @@ module rca(
     .cout(c3)
   );
 
+  // FA3: a[3], b[3], c3 -> sum[3], cout
   FA_Gate FA3 (
     .a(a[3]),
     .b(b[3]),
